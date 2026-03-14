@@ -1,16 +1,17 @@
-from sklearn.cluster import KMeans
+from sklearn.neighbors import NearestNeighbors
 
-def run_kmeans(X, n_clusters=5):
+def run_knn_search(X, query_vector, n_neighbors=10):
     """
-    Apply K-Means clustering on TF-IDF vectors
+    Finds the strictly K nearest neighbors to a query profile vector using Cosine distance.
     """
-
-    model = KMeans(
-        n_clusters=n_clusters,
-        random_state=42,
-        n_init=10
-    )
-
-    labels = model.fit_predict(X)
-
-    return labels, model
+    # Ensure n_neighbors isn't larger than the dataset
+    n_neighbors = min(n_neighbors, X.shape[0])
+    
+    # We use cosine metric for text similarity
+    model = NearestNeighbors(n_neighbors=n_neighbors, metric='cosine')
+    model.fit(X)
+    
+    # Return both the distances and the indices of the matches
+    distances, indices = model.kneighbors(query_vector)
+    
+    return distances[0], indices[0], model

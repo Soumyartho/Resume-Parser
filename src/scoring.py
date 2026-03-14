@@ -1,49 +1,33 @@
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-def calculate_scores(X, labels, model):
+def calculate_match_scores(distances):
     """
-    Calculates resume score (0-10) based on similarity
-    to cluster centroid, normalized within each cluster
-    so top candidates from every category can score highly.
+    Calculates resume score (0-10) based on cosine similarity
+    distance returned by KNN.
+    Since NearestNeighbors returns cosine distance (1 - similarity),
+    we convert it back to similarity, and then scale relative to the best match.
     """
-
-    raw_scores = []
-
-    for i in range(X.shape[0]):
-        # resume vector
-        resume_vector = X[i]
-
-        # corresponding cluster center
-        cluster_id = labels[i]
-        centroid = model.cluster_centers_[cluster_id]
-
-        # cosine similarity (0 → 1)
-        sim = cosine_similarity(
-            resume_vector,
-            centroid.reshape(1, -1)
-        )[0][0]
-
-        raw_scores.append(sim)
-
-    # Convert to numpy array for easier indexing
-    normalized = np.zeros(len(raw_scores))
-    labels_arr = np.array(labels)
     
-    # Normalize to 0-10 scale WITHIN each cluster
-    for cluster_id in np.unique(labels_arr):
-        indices = np.where(labels_arr == cluster_id)[0]
-        cluster_scores = [raw_scores[i] for i in indices]
+    similarities = []
+    
+    for dist in distances:
+        # Cosine distance ranges from 0 (identical) to 2 (opposite).
+        # Similarity = max(0, 1 - distance)
+        similarity = max(0, 1 - dist)
+        similarities.append(similarity)
         
-        min_s = min(cluster_scores)
-        max_s = max(cluster_scores)
+    # Find the best match in the current search query
+    max_sim = max(similarities) if similarities else 0
+    
+    scores = []
+    if max_sim > 0.0:
+        # Scale everyone directly relative to the best candidate being a 10.0
+        for sim in similarities:
+            scaled_score = round((sim / max_sim) * 10.0, 2)
+            scores.append(scaled_score)
+    else:
+        # If no one matched at all, just return zeros
+        scores = [0.0] * len(similarities)
         
-        # Avoid division by zero
-        if max_s > min_s:
-            for i in indices:
-                normalized[i] = round((raw_scores[i] - min_s) / (max_s - min_s) * 10, 2)
-        else:
-            for i in indices:
-                normalized[i] = 10.0
-
-    return list(normalized)
+    return scores
