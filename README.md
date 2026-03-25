@@ -1,15 +1,15 @@
-# 📄 AI Resume Analyzer
+# AI Resume Analyzer
 
-An intelligent, machine-learning-powered application designed to automate the screening, clustering, and ranking of resumes. Built with **Python** and **Streamlit**, this project leverages Natural Language Processing (NLP) to extract meaningful features from raw resume text and uses K-Nearest Neighbors (KNN) to score candidates against a desired job profile.
+The AI Resume Analyzer is an intelligent, machine-learning-powered application designed to automate the screening, clustering, and ranking of resumes. Built with Python and Streamlit, this project leverages Natural Language Processing (NLP) to extract meaningful features from raw resume text and uses K-Nearest Neighbors (KNN) to score candidates against a desired job profile.
 
-## ✨ Features
+## Features
 
-- **Automated Text Preprocessing:** Cleans chaotic resume data by standardizing case, removing punctuation, numbers, and NLTK stop-words.
-- **Mathematical Feature Extraction:** Converts qualitative text into quantitative, high-dimensional arrays using **TF-IDF (Term Frequency-Inverse Document Frequency)** vectorization.
-- **Smart Candidate Matching:** Treats selected job skills as a "query vector" and uses **Cosine Similarity** via **K-Nearest Neighbors (KNN)** to mathematically rank the relevance of applicants.
-- **Interactive Dashboard:** A clean, easy-to-use **Streamlit** user interface that allows recruiters to dynamically select skills, view match percentages, interact with top candidates, and read their raw source resumes.
+- **Automated Text Preprocessing:** Cleans resume data by standardizing case, removing punctuation, numbers, and NLTK stop-words.
+- **Mathematical Feature Extraction:** Converts qualitative text into quantitative, high-dimensional arrays using TF-IDF (Term Frequency-Inverse Document Frequency) vectorization.
+- **Smart Candidate Matching:** Treats selected job skills as a query vector and uses Cosine Similarity via K-Nearest Neighbors (KNN) to mathematically rank the relevance of applicants.
+- **Interactive Dashboard:** A clean, easy-to-use Streamlit user interface that allows recruiters to dynamically select skills, view match percentages, interact with top candidates, and read their raw source resumes.
 
-## 📂 Project Structure
+## Project Structure
 
 - `app.py`: The main entry point for the Streamlit web application dashboard.
 - `main.py`: The backend ML pipeline executing clustering (K-Means) and manual scoring logic.
@@ -21,7 +21,7 @@ An intelligent, machine-learning-powered application designed to automate the sc
   - `scoring.py` (Cosine similarity scoring logic)
 - `requirements.txt`: Project dependencies.
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 Follow these exact steps in your terminal (Command Prompt or PowerShell) to execute the project:
 
@@ -54,10 +54,10 @@ Start the Streamlit UI. This will open a local web server (typically running at 
 streamlit run app.py
 ```
 
-## 🧠 Usage Insights
+## Usage Insights
 
 To use the dashboard efficiently:
-1. Open the **Configuration Sidebar**.
-2. Select your desired candidate parameters (e.g., "Python", "Machine Learning", "Data Analysis").
-3. Click the **Run AI Pipeline** button.
-4. Review the overall metrics, the generated parameter rundown, and interact with the **Top Ranked Candidates** table to read the highest-scoring resumes immediately.
+1. Open the Configuration Sidebar.
+2. Select your desired candidate parameters (e.g., Python, Machine Learning, Data Analysis).
+3. Click the Run AI Pipeline button.
+4. Review the overall metrics, the generated parameter rundown, and interact with the Top Ranked Candidates table to read the highest-scoring resumes immediately.
